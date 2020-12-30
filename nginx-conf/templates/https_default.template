@@ -1,0 +1,15 @@
+server {
+    server_name "";
+    listen 443 ssl default;
+    listen [::]:443 ssl default;
+
+    ssl_certificate /etc/letsencrypt/live/{{.Certname}}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{.Certname}}/privkey.pem;
+    
+    include /etc/letsencrypt/options-ssl-nginx*.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+    
+    location / {
+        return 444;
+    }
+}
