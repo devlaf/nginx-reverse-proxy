@@ -1,8 +1,13 @@
 #!/bin/bash
 
-DOMAIN_LIST="$(/app/nginx-setup-tool -config=/app/config.json -op=domains)"
-CERT_NAME="$(/app/nginx-setup-tool -config=/app/config.json -op=certname)"
-EMAIL="$(/app/nginx-setup-tool -config=/app/config.json -op=email)"
+if [ -z "$NGINX_SETUP_TOOL_CFG" ]; then
+    echo "NGINX_SETUP_TOOL_CFG env variable not set. Nothing to do."
+    exit 0
+fi
+
+DOMAIN_LIST=$(/app/nginx-setup-tool -config=$NGINX_SETUP_TOOL_CFG -op=domains)
+CERT_NAME=$(/app/nginx-setup-tool -config=$NGINX_SETUP_TOOL_CFG -op=certname)
+EMAIL=$(/app/nginx-setup-tool -config=$NGINX_SETUP_TOOL_CFG -op=email)
 WEBROOT='/var/www/acme'
 
 nginx_pid=
@@ -32,7 +37,7 @@ if [ "${found_certs}" -ne 0 ]; then
   fi
 fi
 
-/app/nginx-setup-tool -config=/app/config.json -op=write
+/app/nginx-setup-tool -config=$NGINX_SETUP_TOOL_CFG -op=write
 
 nginx -s reload
 
