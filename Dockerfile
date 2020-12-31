@@ -17,6 +17,7 @@ RUN apk add --update \
 ADD nginx-conf /etc/nginx
 
 WORKDIR /app
+RUN touch config.json
 COPY --from=setup-tool-builder /app/nginx-setup-tool .
-COPY nginx-setup-tool/config.json .
+COPY startup.sh .
 
