@@ -1,0 +1,16 @@
+    server {
+        listen {{.HostPort}};
+
+        {{if ne .RestrictAccessToIP "" -}}
+        allow {{.RestrictAccessToIP}};
+        deny all;
+        {{- end}}
+    
+        {{if .ProxyTargetIsDockerContainer -}}
+        resolver 127.0.0.11 valid=30s;
+        set $upstr {{.ProxyToAddress}}:{{.ProxyToPort}};
+        proxy_pass $upstr;
+        {{- else}}
+        proxy_pass {{.ProxyToAddress}}:{{.ProxyToPort}};
+        {{- end}}
+    }

@@ -1,0 +1,11 @@
+server {
+    server_name "";
+    listen 443 ssl default;
+    listen [::]:443 ssl default;
+
+    include /etc/nginx/sites-include/cert-paths.conf;
+    
+    location / {
+        return 444;
+    }
+}

@@ -1,0 +1,56 @@
+{{if .ForwardHttpToHttps -}}
+# http to https redirect
+server {
+    server_name {{.Domain}};
+    listen 80;
+    listen [::]:80;
+
+    include /etc/nginx/sites-include/certbot-webroot.conf;
+    
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+{{- end}}
+
+{{if .IncludeAndRedirectWWW -}}
+# www redirect
+server {
+    server_name www.{{.Domain}};
+    listen 80;
+    listen [::]:80;
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    include /etc/nginx/sites-include/cert-paths.conf;
+    
+    location / {
+        return 301 $scheme://{{.Domain}}$request_uri;
+    }
+}
+{{- end}}
+
+server {
+    server_name {{.Domain}};
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    include /etc/nginx/sites-include/cert-paths.conf;
+
+    {{if ne .RestrictAccessToIP "" -}}
+    allow {{.RestrictAccessToIP}};
+    deny all;
+    {{- end}}
+    
+    location / {
+        include /etc/nginx/sites-include/proxy-settings.conf;
+
+        {{if .ProxyTargetIsDockerContainer -}}
+        resolver 127.0.0.11 valid=30s;
+        set $upstr {{.ProxyToAddress}};
+        proxy_pass $upstr;
+        {{- else}}
+        proxy_pass {{.ProxyToAddress}};
+        {{- end}}
+    }
+}
