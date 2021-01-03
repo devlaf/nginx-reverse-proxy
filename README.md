@@ -1,5 +1,5 @@
 # nginx-reverse-proxy
-A little nginx-reverse-proxy docker image with just enough automated setup to be reasonably convenient and nothing more.
+A little nginx-reverse-proxy docker image with just enough automated setup to be convenient and nothing more.
 
 I've found variations of something like this to be pretty useful for my own stuff a bunch over the years, and figured I'd formalize some of it here for myself going forward.
 
@@ -45,7 +45,7 @@ Example config.json:
 	],
 	"streams": [{
 		"host_port": 22000,
-		"proxy_to_address": "http://blah",
+		"proxy_to_address": "blah",
 		"proxy_to_port": 22000,
 		"proxy_target_is_docker_container": true
 	}]
