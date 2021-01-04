@@ -27,6 +27,7 @@ type SiteConfig struct {
 
 type StreamConfig struct {
 	HostPort                     int    `json:"host_port"`
+	IsUDP                        bool   `json:"is_udp"`
 	ProxyToAddress               string `json:"proxy_to_address"`
 	ProxyToPort                  int    `json:"proxy_to_port"`
 	ProxyTargetIsDockerContainer bool   `json:"proxy_target_is_docker_container"`

@@ -1,5 +1,9 @@
     server {
+        {{if .IsUDP -}}
+        listen {{.HostPort}} udp;
+        {{- else}}
         listen {{.HostPort}};
+        {{- end}}
 
         {{if ne .RestrictAccessToIP "" -}}
         allow {{.RestrictAccessToIP}};

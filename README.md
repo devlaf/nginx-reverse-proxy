@@ -13,7 +13,7 @@ I've found variations of something like this to be pretty useful for my own stuf
 ### Using
 Dockerfile:
 ```
-FROM devlaf/nginx-reverse-proxy:0.1
+FROM devlaf/nginx-reverse-proxy:0.2
 
 COPY config.json /app/config.json
 ENV NGINX_SETUP_TOOL_CFG=/app/config.json
@@ -45,6 +45,7 @@ Example config.json:
 	],
 	"streams": [{
 		"host_port": 22000,
+        "is_udp": false,
 		"proxy_to_address": "blah",
 		"proxy_to_port": 22000,
 		"proxy_target_is_docker_container": true
